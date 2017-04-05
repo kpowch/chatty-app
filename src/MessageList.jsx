@@ -10,7 +10,7 @@ class MessageList extends React.Component {
           <Message message={message} key={message.id}/>
         )}
 
-        {/* <div className="message system">
+        {/* <div className='message system'>
           Anonymous1 changed their name to nomnom.
         </div> */}
       </main>
