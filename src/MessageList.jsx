@@ -3,7 +3,7 @@ import Message from './Message.jsx';
 
 class MessageList extends React.Component {
   render() {
-    console.log('rendering messageList');
+    // console.log('rendering messageList');
     return (
       <main className='messages'>
         {this.props.messages.map((message) =>
