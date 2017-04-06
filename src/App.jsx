@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
+import Header from './Header.jsx';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
+
+const colors = ['#CF1E65', '#1FC8DB',' #EC9F38', '#63AC94'];
 
 class App extends Component {
   // set initial state
   constructor(props) {
     super(props);
     this.state={
+      userCount: 0,
+      userColor: colors[Math.floor(Math.random() * 3)],
       currentUser: {name: 'Anonymous'},
       messages: [],
     };
@@ -17,12 +22,12 @@ class App extends Component {
   addMessage = (event) => {
     // console.log('handling key press')
     if(event.key === 'Enter'){
-      // sets user and message from the input
       const user = this.state.currentUser.name;
-      const message = event.target.value;
+      const message = event.target.value; // get message string from the input field
+
 
       // send it to the server
-      const newMessage = {type: 'postMessage', username: user, content: message};
+      const newMessage = {type: 'postMessage', username: user, content: message, userColor: this.state.userColor};
       this.socket.send(JSON.stringify(newMessage));
 
       // clear the message input field
@@ -33,8 +38,10 @@ class App extends Component {
   // updates the username
   updateCurrentUser = (event) => {
     const prevName = this.state.currentUser.name;
-    const currentUser = event.target.value;
-    const notification = `${prevName} has changed their name to ${currentUser}`;
+    // set username to anonymous if they don't give one
+    let currentUser = event.target.value ? event.target.value : 'Anonymous';
+
+    const notification = `${prevName} changed their name to ${currentUser}`;
     const newUser = {type: 'postNotification', notification: notification}
     this.socket.send(JSON.stringify(newUser));
     this.setState({currentUser: {name: currentUser}});
@@ -49,7 +56,7 @@ class App extends Component {
     };
 
     this.socket.onmessage = (event) => {
-      console.log('Data:', event.data);
+      // console.log('Data:', event.data);
       const data = JSON.parse(event.data);
 
       switch(data.type) {
@@ -61,9 +68,12 @@ class App extends Component {
         case 'incomingNotification':
           console.log('incomingNotification', data);
           // console.log('content', data.content);
-          // this.state.notification = data.content;
           const notification = this.state.messages.concat(data);
           this.setState({messages: notification});
+          break;
+        case 'userCount':
+          console.log('count', data.userCount);
+          this.setState({userCount: data.userCount});
           break;
         default:
           // show error in console if message type is unknown
@@ -76,7 +86,8 @@ class App extends Component {
     // console.log('rendering app');
     return (
       <div>
-        <MessageList messages={this.state.messages}/>
+        <Header userCount={this.state.userCount}/>
+        <MessageList messages={this.state.messages} userColor={this.state.userColor}/>
         <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage} updateCurrentUser={this.updateCurrentUser}/>
       </div>
     );

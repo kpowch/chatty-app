@@ -5,11 +5,12 @@ class Message extends React.Component {
     // console.log('rendering message');
     return (
       <div>
-        <div className='message system'>
-          <span>{this.props.message.notification}</span>
-        </div>
+        <span className='message system'>
+          {this.props.message.notification}
+        </span>
+
         <div className='message'>
-          <span className='message-username'>{this.props.message.username}</span>
+          <span className='message-username' style={{color:this.props.message.userColor}}>{this.props.message.username}</span>
           <span className='message-content'>{this.props.message.content}</span>
         </div>
       </div>

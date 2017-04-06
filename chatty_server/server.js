@@ -27,13 +27,17 @@ wss.broadcast = function broadcast(data) {
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  // update the number of users currently on the page
+  const userCount = wss.clients.size;
+  wss.broadcast(JSON.stringify({type: 'userCount', userCount: userCount}));
+
+  // broadcast messages (new messages or notification of username change) to all users
   ws.on('message', (data) => {
     const message = JSON.parse(data); // since it's being sent as JSON.stringify
 
     if (message.type === 'postMessage') {
       message.type = 'incomingMessage';
-      // create new id for element
-      message.id = uuidV1();
+      message.id = uuidV1(); // create new id for element
     } else if (message.type = 'postNotification') {
       message.type = 'incomingNotification';
       message.id = uuidV1();
@@ -43,5 +47,10 @@ wss.on('connection', (ws) => {
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    // update the number of users currently on the page
+    const userCount = wss.clients.size;
+    wss.broadcast(JSON.stringify({type: 'userCount', userCount: userCount}));
+  });
 });
