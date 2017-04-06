@@ -7,12 +7,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state={
-      currentUser: {name: ''},
-      messages: []
+      currentUser: {name: 'Anonymous'},
+      messages: [],
     };
-    // These are not necessary because the handle functions automatically bind 'this' to them
-    // this.addMessage=this.addMessage.bind(this);
-    // this.updateCurrentUser=this.updateCurrentUser.bind(this);
   }
 
   // adds message to message array
@@ -25,7 +22,7 @@ class App extends Component {
       const message = event.target.value;
 
       // send it to the server
-      const newMessage = {username: user, content: message};
+      const newMessage = {type: 'postMessage', username: user, content: message};
       this.socket.send(JSON.stringify(newMessage));
 
       // clear the message input field
@@ -35,32 +32,51 @@ class App extends Component {
 
   // updates the username
   updateCurrentUser = (event) => {
-    this.setState({currentUser: {name: event.target.value}});
+    const prevName = this.state.currentUser.name;
+    const currentUser = event.target.value;
+    const notification = `${prevName} has changed their name to ${currentUser}`;
+    const newUser = {type: 'postNotification', notification: notification}
+    this.socket.send(JSON.stringify(newUser));
+    this.setState({currentUser: {name: currentUser}});
   }
 
 
   componentDidMount = () => {
     this.socket = new WebSocket('ws://0.0.0.0:3001');
 
-    this.socket.onopen = function () {
+    this.socket.onopen = () => {
       console.log('\n App connected to server');
     };
 
-    this.socket.onmessage = (messageEvent) => {
-      console.log('Message data:', messageEvent.data)
+    this.socket.onmessage = (event) => {
+      console.log('Data:', event.data);
+      const data = JSON.parse(event.data);
 
-      // adds new message to message array and sends to browswer to render
-      const messages = this.state.messages.concat(JSON.parse(messageEvent.data));
-      this.setState({messages: messages});
-    };
-
+      switch(data.type) {
+        case 'incomingMessage':
+          console.log('incomingMessage', data);
+          const messages = this.state.messages.concat(data);
+          this.setState({messages: messages});
+          break;
+        case 'incomingNotification':
+          console.log('incomingNotification', data);
+          // console.log('content', data.content);
+          // this.state.notification = data.content;
+          const notification = this.state.messages.concat(data);
+          this.setState({messages: notification});
+          break;
+        default:
+          // show error in console if message type is unknown
+          throw new Error('Unknown event type ' + data.type);
+      }
+    }
   }
 
   render() {
     // console.log('rendering app');
     return (
       <div>
-        <MessageList messages={this.state.messages} />
+        <MessageList messages={this.state.messages}/>
         <ChatBar currentUser={this.state.currentUser.name} addMessage={this.addMessage} updateCurrentUser={this.updateCurrentUser}/>
       </div>
     );

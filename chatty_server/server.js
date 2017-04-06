@@ -30,9 +30,15 @@ wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     const message = JSON.parse(data); // since it's being sent as JSON.stringify
 
-    // create new id for element
-    message.id = uuidV1();
-    // broadcast message to all 
+    if (message.type === 'postMessage') {
+      message.type = 'incomingMessage';
+      // create new id for element
+      message.id = uuidV1();
+    } else if (message.type = 'postNotification') {
+      message.type = 'incomingNotification';
+      message.id = uuidV1();
+    }
+    // broadcast message to all
     wss.broadcast(JSON.stringify(message));
   });
 

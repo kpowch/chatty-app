@@ -9,10 +9,6 @@ class MessageList extends React.Component {
         {this.props.messages.map((message) =>
           <Message message={message} key={message.id}/>
         )}
-
-        {/* <div className='message system'>
-          Anonymous1 changed their name to nomnom.
-        </div> */}
       </main>
     );
   }
