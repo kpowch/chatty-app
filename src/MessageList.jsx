@@ -6,7 +6,6 @@ class MessageList extends React.Component {
     // console.log('rendering messageList');
     return (
       <main className='messages'>
-        {/* this should check the type and either render the notification or the message */}
         {this.props.messages.map((message) =>
           <Message message={message} key={message.id}/>
         )}

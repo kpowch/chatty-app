@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 class Message extends React.Component {
 
+  // Renders notification
   renderNotification() {
     const { message } = this.props;
 
@@ -12,6 +13,7 @@ class Message extends React.Component {
     )
   }
 
+  // Renders message and image if one is given
   renderMessage() {
     const { message } = this.props;
 

@@ -68,6 +68,7 @@ class App extends Component {
     this.setState({currentUser: {name: currentUser}});
   }
 
+  // Handles received messages from server
   componentDidMount = () => {
     this.socket = new WebSocket('ws://0.0.0.0:3001');
 
@@ -80,7 +81,7 @@ class App extends Component {
       const data = JSON.parse(event.data);
 
       // handles message according to what kind of info is coming out
-      // TODO some of this is redundant 
+      // TODO some of this is redundant
       switch(data.type) {
         case 'incomingMessage':
           // console.log('incomingMessage', data);
