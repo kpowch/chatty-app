@@ -9,7 +9,7 @@ class Header extends React.Component {
     // console.log('rendering header');
     return (
       <nav className='navbar'>
-        <a href='/' className='navbar-brand'>Chatty</a>
+        <a href='/' className='navbar-brand'>Chatty Cat</a>
         <span className='navbar-users'>{this.props.userCount} users online</span>
       </nav>
     );

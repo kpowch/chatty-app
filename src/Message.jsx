@@ -1,20 +1,48 @@
-//TODO make it so that the notification doesn't take up 2 lines
 import React, {Component} from 'react';
 
 class Message extends React.Component {
+
+  renderNotification() {
+    const { message } = this.props;
+
+    return (
+      <span className='message system'>
+        {message.notification}
+      </span>
+    )
+  }
+
+  renderMessage() {
+    const { message } = this.props;
+
+    return (
+      <div className='message'>
+        <span className='message-username' style={{ color: message.userColor }}>
+          {message.username}
+        </span>
+        <span className='message-content'>{message.content}</span>
+      </div>
+    )
+  }
+
   render() {
     // console.log('rendering message');
+    const { message } = this.props;
+
     return (
       <div>
-        <span className='message system'>
-          {this.props.message.notification}
-        </span>
-
-        <div className='message'>
-          <span className='message-username' style={{color:this.props.message.userColor}}>{this.props.message.username}</span>
-          <span className='message-content'>{this.props.message.content}</span>
-          <img className='message-image' src={this.props.message.img}/>
+        <div className='message-details'>
+          {message.type === 'incomingNotification' && this.renderNotification()}
+          {message.type === 'incomingMessage' && this.renderMessage()}
         </div>
+        {message.img && (
+          <div className='message'>
+            <span className='message-username'></span>
+            <div className='message-content'>
+              <img  src={message.img}/>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

@@ -10,7 +10,7 @@ body {
 }
 
   .chatbar {
-    background: tomato;
+    background: #CCCDCF;
     border-top: 1px solid black;
     bottom: 0;
     display: flex;
@@ -20,23 +20,23 @@ body {
     right: 0;
   }
 
-  .chatbar-message,
-  .chatbar-username {
-    border: 1px solid black;
-    display: block;
-    height: 40px;
-    line-height: 40px;
-    margin: 5px;
-    padding: 0 9px;
-  }
+    .chatbar-message,
+    .chatbar-username {
+      border: 1px solid black;
+      display: block;
+      height: 40px;
+      line-height: 40px;
+      margin: 5px;
+      padding: 0 9px;
+    }
 
-  .chatbar-message {
-    flex: 8;
-  }
+    .chatbar-message {
+      width: 100%;
+    }
 
-  .chatbar-username {
-    flex: 2;
-  }
+    .chatbar-username {
+      width: 150px;
+    }
 
   .message {
     display: flex;
@@ -44,38 +44,36 @@ body {
   }
 
     .message-content,
-    .message-username,
-    .msesage-image {
+    .message-username {
       overflow: hidden;
       margin: 5px;
       padding: 0 10px;
     }
 
-    .message-content,
-    .message-image {
-      flex: 8;
+    .message-content {
+      width: 100%;
+      word-wrap: break-word;
+    }
+
+    .message-content img {
+      margin: 0;
+      padding: 0;
+      max-width: 60%;
     }
 
     .message-username {
-      flex: 2;
       font-weight: 700;
+      width: 150px;
     }
 
-    .message-image {
-      display: block;
-      max-width: 200px;
-      width: auto;
-      height: auto;
+    .message.system {
+      font-style: italic;
+      padding: 5px 20px;
     }
-
-  .message.system {
-    font-style: italic;
-    padding: 5px 20px;
-  }
 
   .navbar {
-    background: tomato;
-    border-bottom: 1px solid black;
+    background: #CCCDCF;
+    border-bottom: 1px solid #CCCDCF;
     height: 60px;
     left: 0;
     padding: 0 10px;
