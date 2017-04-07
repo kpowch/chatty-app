@@ -44,19 +44,28 @@ body {
   }
 
     .message-content,
-    .message-username {
+    .message-username,
+    .msesage-image {
       overflow: hidden;
       margin: 5px;
       padding: 0 10px;
     }
 
-    .message-content {
+    .message-content,
+    .message-image {
       flex: 8;
     }
 
     .message-username {
       flex: 2;
       font-weight: 700;
+    }
+
+    .message-image {
+      display: block;
+      max-width: 200px;
+      width: auto;
+      height: auto;
     }
 
   .message.system {

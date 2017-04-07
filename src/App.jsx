@@ -25,9 +25,17 @@ class App extends Component {
       const user = this.state.currentUser.name;
       const message = event.target.value; // get message string from the input field
 
-
       // send it to the server
       const newMessage = {type: 'postMessage', username: user, content: message, userColor: this.state.userColor};
+
+      // regular expression to check if the message content includes an image link
+      var regexObj = new RegExp('http(s?):\/\/.+?\.(?:jpg|gif|png)');
+      var imageLink = regexObj.exec(event.target.value);
+      if (imageLink) {
+        console.log('reg expression', imageLink[0]);
+        newMessage.img = imageLink[0];
+      }
+
       this.socket.send(JSON.stringify(newMessage));
 
       // clear the message input field
